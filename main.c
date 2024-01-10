@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <stdbool.h>
-#include <ncurses.h>
 
 #define NUM_THREADS 9
 bool threads_running = true;
