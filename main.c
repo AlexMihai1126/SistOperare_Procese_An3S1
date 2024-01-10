@@ -3,8 +3,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdbool.h>
+#include <ncurses.h>
 
 #define NUM_THREADS 9
+bool threads_running = true;
 
 pthread_t threads[NUM_THREADS];
 int thread_numbers[NUM_THREADS];
@@ -14,41 +17,39 @@ void *thread_function(void *arg) {
     while (1) {
         int sleep_time = rand() % 5 + 1;
         sleep(sleep_time);
-        printf("Thread %d: %d\n", thread_num, thread_num);
+        printf("Thread %d \n", thread_num);
     }
-    return NULL;
 }
 
 int main() {
     srand(time(NULL));
 
-    // Crearea firelor de execuție
     for (int i = 0; i < NUM_THREADS; i++) {
         thread_numbers[i] = i + 1;
         pthread_create(&threads[i], NULL, thread_function, &thread_numbers[i]);
     }
 
-    // Așteptarea input-ului de la tastatură și anularea firelor de execuție corespunzătoare
-    while (1) {
+    while (threads_running == true) {
         int input;
-        printf("Introduceti cifra pentru a anula thread-ul (1-9): ");
         scanf("%d", &input);
-
-        if (input >= 1 && input <= NUM_THREADS) {
+        if (input >= 1 && input <= NUM_THREADS && thread_numbers[input-1] !=0) {
             pthread_cancel(threads[input - 1]);
             pthread_join(threads[input - 1], NULL);
             printf("Thread-ul %d a fost anulat.\n", input);
+            thread_numbers[input-1] = 0;
+            for (int i=0;i<NUM_THREADS;i++){
+                if (thread_numbers[i] != 0){
+                    threads_running = true;
+                    break;
+                }
+                else{
+                    threads_running = false;
+                }
+            }
         } else {
-            printf("Introduceti o cifra valida (1-9).\n");
+            printf("Thread-ul nu exista.\n");
         }
     }
-
-    // Așteptarea terminării tuturor firelor de execuție
-    for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_join(threads[i], NULL);
-    }
-
     printf("Toate firele de execuție s-au încheiat. Programul se încheie.\n");
-
     return 0;
 }

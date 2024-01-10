@@ -1,0 +1,5 @@
+/cmake-build-debug/Testing/
+/cmake-build-debug/.ninja_log
+/cmake-build-debug/threaduri_so
+/cmake-build-debug/.ninja_deps
+/cmake-build-debug/CMakeFiles/threaduri_so.dir/
