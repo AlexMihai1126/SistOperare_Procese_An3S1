@@ -49,6 +49,6 @@ int main() {
             printf("Thread-ul nu exista.\n");
         }
     }
-    printf("Toate firele de execuție s-au încheiat. Programul se încheie.\n");
+    printf("Toate firele de executie s-au încheiat. Programul se încheie.\n");
     return 0;
 }
